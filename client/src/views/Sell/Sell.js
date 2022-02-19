@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import SellLayout from "../../components/form/SellLayout";
+import SellLayout from "../../components/forms/SellLayout";
 import Layout from "../../components/layout/Layout";
 import { Formulaire } from "../../utils/functions/FormManagement";
 import { importImages } from "../../utils/functions/Functions";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import DiscardLayout from "../../components/form/DiscardLayout";
+import DiscardLayout from "../../components/forms/DiscardLayout";
 import Layout from "../../components/layout/Layout";
 import { importImages } from "../../utils/functions/Functions";
 import { Formulaire } from "../../utils/functions/FormManagement";

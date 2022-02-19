@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import GiveLayout from "../../components/form/GiveLayout";
+import GiveLayout from "../../components/forms/GiveLayout";
 import Layout from "../../components/layout/Layout";
 import { importImages } from "../../utils/functions/Functions";
 import { Formulaire } from "../../utils/functions/FormManagement";

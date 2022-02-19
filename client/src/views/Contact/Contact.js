@@ -1,6 +1,6 @@
 import React, {useState } from "react";
 import { Link } from "react-router-dom";
-import ContactLayout from "../../components/form/ContactLayout";
+import ContactLayout from "../../components/forms/ContactLayout";
 import emailjs from 'emailjs-com';
 import Layout from "../../components/layout/Layout";
 import { importImages } from "../../utils/functions/Functions";

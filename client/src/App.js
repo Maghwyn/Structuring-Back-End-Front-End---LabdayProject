@@ -1,24 +1,8 @@
 import React, {useEffect} from "react";
 import { BrowserRouter as Router, Routes as Switch, Route } from "react-router-dom";
 
-//Pages
-import Home from "./views/Home/Home";
-//-
-import Sell from "./views/Sell/Sell";
-import SellToWebsite from "./views/Sell/SellToWebsite";
-//-
-import Give from "./views/Give/Give";
-import GiveToAsso from "./views/Give/GiveToAsso";
-//-
-import Discard from "./views/Discard/Discard";
-import DiscardToTrash from "./views/Discard/DiscardToTrash";
-import DiscardToDump from "./views/Discard/DiscardToDump";
-//-
-import Contact from "./views/Contact/Contact";
-import ContactRedirect from "./views/Contact/ContactRedirect";
-//-
-import Error404 from "./views/Error404";
-
+import { Home, Sell, SellToWebsite, Give, GiveToAsso, Discard, 
+    DiscardToDump, DiscardToTrash, Contact, ContactRedirect, Error404 } from "./views";
 
 const App = ({hideLoader}) => {
     useEffect(() => hideLoader(), [hideLoader]);
