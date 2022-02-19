@@ -6,7 +6,7 @@ export const getUserById = async (req, res) => {
     try {
         const result = await dbFetch.query('SELECT * FROM users WHERE id = $1', [id]);
         res.status(201).send(result.rows);
-        console.log(result.rows)
+        console.log(result.rows);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
