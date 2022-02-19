@@ -1,5 +1,3 @@
-import cities from "../json/Cities";
-
 export class Formulaire {
     $product = { name: null, material: null };
     $city = { name: null , zip: null, departement: null, lat: null, long: null, form: null };
@@ -33,28 +31,40 @@ export class Formulaire {
         return valid;
     }
 
-    verifyZipValidity(value, nodes) {
-        const com = document.getElementById("city");
-        const arrayData = cities.filter(cityProps => cityProps.zip === value);
-        const valid = (arrayData.length !== 0) ? true : false;
-        let coords = [];
+    async verifyZipValidity(value, nodes) {
+        if(value.length !== 5) { this.colorValidity(false, nodes); return false };
+        //Kinda tried to limit api call.
 
-        //! bad fix
+        let fetchedCity, coords = [];
+
+        //Pretty sure that's not safe agaisnt sql injection, even tho i splice it, i dunno yet.
+        try {
+            const dep = value.slice(0,2);
+            const zip = value.slice(0,5);
+            fetchedCity = await fetch(`http://localhost:5000/department/${dep}/cities?zip=${zip}`).then((res) => res.json());
+        } catch (error) {
+            console.log(error.message);
+        }
+    
+        //*! bad fix
+        const com = document.getElementById("city");
         const option = document.createElement('option');
         com.innerHTML = '';
         option.setAttribute("defaultValue","defaultValue");
         option.setAttribute("hidden", "hidden");
         option.value = "";
         com.appendChild(option);
+        //!
     
-        arrayData.forEach(cityProps => {
+        fetchedCity.forEach(city => {
             const option = document.createElement('option');
-            option.textContent = cityProps.name + ", " + cityProps.department;
+            option.textContent = city.name + ", " + city.department;
             com.appendChild(option);
 
-            coords[coords.length] = { name: cityProps.name, coord: { lat: cityProps.lat, lng: cityProps.long } };
-        })
+            coords[coords.length] = { name: city.name, coord: { lat: city.lat, lng: city.lon } };
+        });
 
+        const valid = (fetchedCity.length !== 0) ? true : false;
         this.colorValidity(valid, nodes);
         this.$citiesCoords = coords;
         this.$city.zip = value;

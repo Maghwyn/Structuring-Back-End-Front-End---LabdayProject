@@ -1,24 +1,25 @@
 import dbFetch from "../config/config.js";
 
-export const getCity = async (req, res) => {
-    const id = parseInt(req.params.id);
+
+export const getCitiesWithZip = async (req, res) => {
+    const department = req.params.id;
+    const { zip } = req.query;
 
     try {
-        const result = await dbFetch.query('SELECT * FROM users WHERE id = $1', [id]);
-        res.status(201).send(result.rows);
-        console.log(result.rows);
+        let { rows } = await dbFetch.query('SELECT * FROM cities WHERE department = $1', [department]);
+        if(zip) rows = rows.filter(r => r.zip === zip);
+        res.status(201).send(rows);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
 }
 
-export const getAllDump = async (req, res) => {
-    const id = parseInt(req.params.id);
+export const getDumpPerDepartment = async (req, res) => {
+    const department = req.params.id;
 
     try {
-        const result = await dbFetch.query('SELECT * FROM users WHERE id = $1', [id]);
-        res.status(201).send(result.rows);
-        console.log(result.rows);
+        const { rows } = await dbFetch.query('SELECT * FROM dumps WHERE department = $1', [department]);
+        res.status(201).send(rows);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }

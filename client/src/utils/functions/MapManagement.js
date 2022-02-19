@@ -1,8 +1,8 @@
 import { useMap } from "react-leaflet";
 
-export const DisplayMarker = ({leaflet, location, dump}) => {
+export const DisplayMarker = ({leaflet, location}) => {
     const map = useMap();
-    if(location.form === "discard") fetchDumpMarkers(leaflet, location, map, dump);
+    if(location.form === "discard") fetchDumpMarkers(leaflet, location, map);
     fetchMarker(leaflet, location, map);
 
     return null;
@@ -20,17 +20,24 @@ function fetchMarker(leaflet, location, map) {
     marker.bindPopup("You are here.");
 }
 
-function fetchDumpMarkers(leaflet, location, map, dump) {
+async function fetchDumpMarkers(leaflet, location, map) {
     const red_icon = leaflet.icon({ iconSize: [25, 41], iconAnchor: [10, 41], popupAnchor: [2, -40],
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     });
 
-    const dep = location.zip.slice(0,2);
-    const items = dump.find(el => el.dep === `${dep}`).content;
+    let fetchedDump;
 
-    items.forEach(el => {
-        let marker = leaflet.marker([el.lat, el.long], {icon: red_icon}).addTo(map);
+    //Pretty sure that's not safe agaisnt sql injection, even tho i splice it, i dunno yet.
+    try {
+        const dep = location.zip.slice(0,2);
+        fetchedDump = await fetch(`http://localhost:5000/department/${dep}/dumps`).then((res) => res.json());
+    } catch (error) {
+        console.log(error.message);
+    }
+
+    fetchedDump.forEach(el => {
+        let marker = leaflet.marker([el.lat, el.lon], {icon: red_icon}).addTo(map);
         marker.bindPopup(el.name)
     });
 }
